@@ -1,0 +1,24 @@
+name: tests
+on:
+    push: &trigger_config
+        branches: ["*"]
+        paths:
+            - macros/**
+            - src/**
+            - tests/**
+            - Cargo.toml
+            - Cargo.lock
+            - .github/workflows/tests.yml
+    pull_request:
+        <<: *trigger_config
+jobs:
+    run-cargo-test:
+        runs-on: ubuntu-latest
+        container: ghcr.io/winstonallo/kernel-test-runner
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Run crate tests
+              run: cargo test
